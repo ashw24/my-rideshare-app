@@ -1,0 +1,22 @@
+/* HeroBanner.css */
+
+.hero-banner {
+  background-color: #f8f9fa;
+  padding: 50px 20px;
+  color: #333;
+}
+
+.hero-banner h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.hero-banner p {
+  font-size: 1.2em;
+}
+
+@media (max-width: 768px) {
+  .hero-banner h1 {
+    font-size: 2em;
+  }
+}
