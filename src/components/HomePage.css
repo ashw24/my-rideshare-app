@@ -12,25 +12,28 @@
 
 .button-group {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust the exact center */
   text-align: center;
+  width: 100%; /* Full width of the container */
 }
 
 .action-button {
+  background-color: #007bff;
+  color: white;
   border: none;
   border-radius: 5px;
-  padding: 2% 5%; /* Use percentage to scale with the screen size */
+  padding: 20px 40px; /* Larger padding for bigger buttons */
   margin: 10px;
   cursor: pointer;
-  font-size: 2em; /* Larger font size */
+  font-size: 24px; /* Larger font size */
+  width: 40%; /* Button width to take up a significant portion of the screen */
+  min-width: 250px; /* Minimum width for smaller screens */
   transition: transform 0.3s ease;
-  width: 80%; /* Button width - less than half of the container width */
-  max-width: 300px; /* To prevent the buttons from becoming too large on wider screens */
+  display: inline-block; /* Align buttons next to each other */
 }
 
-/* Different colors for each button */
 .action-button:first-child {
   background-color: #28a745; /* Green */
   color: white;
@@ -40,7 +43,17 @@
   background-color: #17a2b8; /* Blue */
   color: white;
 }
-
 .action-button:hover {
-  transform: scale(1.1); /* Enlarge the button on hover */
+  transform: scale(1.02); /* Enlarge the button on hover */
+}
+
+@media (max-width: 768px) {
+  .action-button {
+    width: 80%; /* Larger width on smaller screens */
+    padding: 15px; /* Adjust padding for smaller screens */
+    font-size: 18px; /* Adjust font size for readability */
+  }
+}
+a {
+  text-decoration: none; /* Removes the underline */
 }
