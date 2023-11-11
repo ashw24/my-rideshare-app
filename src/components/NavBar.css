@@ -15,7 +15,7 @@
   padding: 0;
   margin: 0;
   display: flex;
-  justify-content: center; /* Center the links */
+  justify-content: left; /* Center the links */
   align-items: center;
   height: 50px; /* Fixed height */
 }

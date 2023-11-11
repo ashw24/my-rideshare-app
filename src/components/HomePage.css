@@ -1,26 +1,46 @@
 /* HomePage.css */
 
-.home-page {
-  font-family: 'Arial', sans-serif;
-  text-align: center;
+.image-overlay-container {
+  position: relative;
+}
+
+.full-width-image {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .button-group {
-  margin-top: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
-.button-group button {
-  background-color: #007bff;
-  color: white;
+.action-button {
   border: none;
   border-radius: 5px;
-  padding: 10px 20px;
-  margin: 0 10px;
+  padding: 2% 5%; /* Use percentage to scale with the screen size */
+  margin: 10px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+  font-size: 2em; /* Larger font size */
+  transition: transform 0.3s ease;
+  width: 80%; /* Button width - less than half of the container width */
+  max-width: 300px; /* To prevent the buttons from becoming too large on wider screens */
 }
 
-.button-group button:hover {
-  background-color: #0056b3;
+/* Different colors for each button */
+.action-button:first-child {
+  background-color: #28a745; /* Green */
+  color: white;
+}
+
+.action-button:last-child {
+  background-color: #17a2b8; /* Blue */
+  color: white;
+}
+
+.action-button:hover {
+  transform: scale(1.1); /* Enlarge the button on hover */
 }
