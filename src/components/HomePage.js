@@ -1,8 +1,9 @@
 // src/HomePage.js
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import NavBar from './NavBar';
-import './HomePage.css'; // Make sure to import your CSS file
+import './HomePage.css';
 
 function HomePage() {
   return (
@@ -11,8 +12,8 @@ function HomePage() {
       <div className="image-overlay-container">
         <img src="/blog-hero.jpg" alt="A descriptive text for the image" className="full-width-image" />
         <div className="button-group">
-          <button className="action-button">For Drivers</button>
-          <button className="action-button">For Passengers</button>
+          <Link to="/drive" className="action-button">For Drivers</Link>
+          <Link to="/passenger" className="action-button">For Passengers</Link>
         </div>
       </div>
     </div>

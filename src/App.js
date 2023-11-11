@@ -1,13 +1,20 @@
 // src/App.js
 
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import HomePage from './components/HomePage';
+import Drive from './components/Driver'; // Import Drive component
+import Passenger from './components/Passenger'; // Import Passenger component
 
 function App() {
   return (
-    <div className="App">
-      <HomePage />
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/" exact component={HomePage} />
+        <Route path="/drive" component={Drive} />
+        <Route path="/passenger" component={Passenger} />
+      </Switch>
+    </Router>
   );
 }
 
