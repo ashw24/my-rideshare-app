@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import GoogleMapReact from 'google-map-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import './Driver.css';
 
-const Drive = () => {
+const Driver = () => {
   const [startPoint, setStartPoint] = useState(null);
   const [endPoint, setEndPoint] = useState(null);
+  const [isSettingEndPoint, setIsSettingEndPoint] = useState(false);
+  const isSettingEndPointRef = useRef(isSettingEndPoint); // useRef to track the current state
+
+  const [showSidebar, setShowSidebar] = useState(false);
   const [midPoint, setMidPoint] = useState(null);
-  const [settingStart, setSettingStart] = useState(true); // New state to toggle between start and end points
+  const [settingStart, setSettingStart] = useState(true);
+  const [startMarker, setStartMarker] = useState(null);
+  const [endMarker, setEndMarker] = useState(null);
+
+  const [mapClicksDisabled, setMapClicksDisabled] = useState(false);
+
 
   // Function to calculate midpoint
   const calculateMidpoint = (point1, point2) => {
@@ -20,9 +29,9 @@ const Drive = () => {
 
   // Fetch passengers based on the midpoint
   const fetchPassengers = () => {
-    if (midPoint) {
-      // API call logic here
-    }
+    console.log('Start Point:', startPoint);
+    console.log('End Point:', endPoint);
+    // Existing API call logic here (if any)
   };
 
   useEffect(() => {
@@ -31,54 +40,107 @@ const Drive = () => {
     }
   }, [startPoint, endPoint]);
 
+
+  useEffect(() => {
+    isSettingEndPointRef.current = isSettingEndPoint; // Update ref whenever state changes
+  }, [isSettingEndPoint]);
+
+
+
   const handleApiLoaded = (map, maps) => {
-    let isSettingStart = true; // Local variable to toggle between start and end
-  
     map.addListener("click", (e) => {
+      if (mapClicksDisabled) return; // Prevent handling clicks if map clicks are disabled
+
       const lat = e.latLng.lat();
       const lng = e.latLng.lng();
-      console.log("Map clicked at: ", lat, lng); // Debugging
-  
-      if (isSettingStart) {
-        console.log("Setting start point");
-        setStartPoint({ lat, lng });
+      const position = { lat, lng };
+
+      if (!isSettingEndPointRef.current) {
+        setStartPoint(position);
+
+        // Remove the existing start marker if it exists
+        if (startMarker) startMarker.setMap(null);
+
+        const marker = new maps.Marker({
+          position,
+          map,
+          label: "S"
+        });
+
+        setStartMarker(marker);
+        setIsSettingEndPoint(true); // Toggle to set end point next
       } else {
-        console.log("Setting end point");
-        setEndPoint({ lat, lng });
+        setEndPoint(position);
+
+        // Remove the existing end marker if it exists
+        if (endMarker) endMarker.setMap(null);
+
+        const marker = new maps.Marker({
+          position,
+          map,
+          label: "E"
+        });
+
+        setEndMarker(marker);
+        setIsSettingEndPoint(false); // Reset for next time
+        setShowSidebar(true); // Open sidebar after setting end point
+        
       }
-  
-      // Toggle the variable for the next click
-      isSettingStart = !isSettingStart;
-      setSettingStart(isSettingStart); // Update state as well, if needed elsewhere
     });
   };
 
-  const Marker = ({ text }) => <div className="marker">{text}</div>;
-  
 
   return (
-    <div style={{ height: '100vh', width: '100%' }}>
+    <div style={{ height: '100vh', width: '100vw' }}>
+      {settingStart ? (
+        <div className="instructions">Pick the Start Point</div>
+      ) : (
+        <div className="instructions">Pick the End Point</div>
+      )}
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyDpPN-iKLhciUkBuZNbTHCAxFUQgBkKg-s" }} // Replace with your Google Maps API key
+        bootstrapURLKeys={{ key: 'APIKEY' }} // Replace with your Google Maps API key
         defaultCenter={{ lat: 37.34, lng: -121.938130 }}
         defaultZoom={16}
         yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
       >
+        {/* Render markers for startPoint and endPoint */}
         {startPoint && (
-          <div lat={startPoint.lat} lng={startPoint.lng}>Start</div>
+          <div 
+            lat={startPoint.lat} 
+            lng={startPoint.lng}
+            className="marker start-marker"
+          >
+            Start
+          </div>
         )}
         {endPoint && (
-          <div lat={endPoint.lat} lng={endPoint.lng}>End</div>
+          <div 
+            lat={endPoint.lat} 
+            lng={endPoint.lng}
+            className="marker end-marker"
+          >
+            End
+          </div>
         )}
-        {startPoint && <Marker lat={startPoint.lat} lng={startPoint.lng} text="Start" />}
-        {endPoint && <Marker lat={endPoint.lat} lng={endPoint.lng} text="End" />}
       </GoogleMapReact>
-      <button className="next-button" onClick={fetchPassengers}>
+      {!isSettingEndPoint && (
+        <button className="next-button" onClick={fetchPassengers}>
         Next <FontAwesomeIcon icon={faArrowRight} />
       </button>
+      )}
+
+      {showSidebar && (
+        <div className="sidebar">
+          {/* Sidebar content goes here */}
+          <p>Start Point: {JSON.stringify(startPoint)}</p>
+          <p>End Point: {JSON.stringify(endPoint)}</p>
+        </div>
+      )}
+      
     </div>
   );
 };
 
-export default Drive;
+
+export default Driver;

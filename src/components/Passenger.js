@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './Passenger.css';
 class RideForm extends React.Component {
   handleAskForFare = () => {
     // Logic for asking the passenger how much they are willing to pay
