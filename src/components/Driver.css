@@ -18,4 +18,7 @@
     margin-left: 10px; /* Space between text and icon */
 
   }
+  .marker {
+    color: red; /* Marker text color */
+  }
   
