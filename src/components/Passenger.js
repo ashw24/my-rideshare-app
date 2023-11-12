@@ -1,4 +1,5 @@
 import React from 'react';
+import './Passenger.css'
 
 class RideForm extends React.Component {
   handleAskForFare = () => {
