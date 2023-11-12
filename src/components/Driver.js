@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import GoogleMapReact from 'google-map-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import './Driver.css';
 
 const Drive = () => {
   const [startPoint, setStartPoint] = useState(null);
   const [endPoint, setEndPoint] = useState(null);
   const [midPoint, setMidPoint] = useState(null);
+  const [settingStart, setSettingStart] = useState(true); // New state to toggle between start and end points
 
   // Function to calculate midpoint
   const calculateMidpoint = (point1, point2) => {
@@ -19,7 +22,6 @@ const Drive = () => {
   const fetchPassengers = () => {
     if (midPoint) {
       // API call logic here
-      // Example: axios.get('/api/passengers', { params: { lat: midPoint.lat, lng: midPoint.lng } })
     }
   };
 
@@ -33,21 +35,26 @@ const Drive = () => {
     map.addListener("click", (e) => {
       const lat = e.latLng.lat();
       const lng = e.latLng.lng();
-
-      // Set startPoint or endPoint based on user clicks
-      if (!startPoint) {
+      console.log("Map clicked at: ", lat, lng); // Debugging
+  
+      if (settingStart) {
+        console.log("Setting start point");
         setStartPoint({ lat, lng });
-      } else if (!endPoint) {
+        setSettingStart(false);
+      } else {
+        console.log("Setting end point");
         setEndPoint({ lat, lng });
+        setSettingStart(true);
       }
     });
   };
+  
 
   return (
-    <div style={{ height: '55vw', width: '100%' }}>
+    <div style={{ height: '100vh', width: '100%' }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyDpPN-iKLhciUkBuZNbTHCAxFUQgBkKg-s" }} // Replace with your Google Maps API key
-        defaultCenter={{ lat: 37.34 , lng: -121.938130 }}
+        defaultCenter={{ lat: 37.34, lng: -121.938130 }}
         defaultZoom={11}
         yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
@@ -60,7 +67,9 @@ const Drive = () => {
           <div lat={endPoint.lat} lng={endPoint.lng}>End</div>
         )}
       </GoogleMapReact>
-      <button onClick={fetchPassengers}>Next</button>
+      <button className="next-button" onClick={fetchPassengers}>
+        Next <FontAwesomeIcon icon={faArrowRight} />
+      </button>
     </div>
   );
 };
