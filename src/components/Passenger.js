@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import './Passenger.css';
 
 class RideForm extends React.Component {
@@ -8,8 +9,8 @@ class RideForm extends React.Component {
   };
 
   handleCancel = () => {
-    // Logic for canceling the ride
-    alert('Ride canceled.');
+    // Logic for canceling the ride and redirecting to the homepage
+    this.props.history.push('/'); // Redirect to homepage
   };
 
   render() {
@@ -33,4 +34,4 @@ class RideForm extends React.Component {
   }
 }
 
-export default RideForm;
+export default withRouter(RideForm);

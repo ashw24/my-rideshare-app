@@ -98,7 +98,7 @@ const Driver = () => {
         <div className="instructions">Pick the End Point</div>
       )}
       <GoogleMapReact
-        bootstrapURLKeys={{ key: 'AIzaSyA3EcvgBalGzheh1ss1MnsC4zU2b7kql-Y' }} // Replace with your Google Maps API key
+        bootstrapURLKeys={{ key: '' }} // Replace with your Google Maps API key
         defaultCenter={{ lat: 37.34, lng: -121.938130 }}
         defaultZoom={16}
         yesIWantToUseGoogleMapApiInternals
