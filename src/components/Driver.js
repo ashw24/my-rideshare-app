@@ -32,22 +32,28 @@ const Drive = () => {
   }, [startPoint, endPoint]);
 
   const handleApiLoaded = (map, maps) => {
+    let isSettingStart = true; // Local variable to toggle between start and end
+  
     map.addListener("click", (e) => {
       const lat = e.latLng.lat();
       const lng = e.latLng.lng();
       console.log("Map clicked at: ", lat, lng); // Debugging
   
-      if (settingStart) {
+      if (isSettingStart) {
         console.log("Setting start point");
         setStartPoint({ lat, lng });
-        setSettingStart(false);
       } else {
         console.log("Setting end point");
         setEndPoint({ lat, lng });
-        setSettingStart(true);
       }
+  
+      // Toggle the variable for the next click
+      isSettingStart = !isSettingStart;
+      setSettingStart(isSettingStart); // Update state as well, if needed elsewhere
     });
   };
+
+  const Marker = ({ text }) => <div className="marker">{text}</div>;
   
 
   return (
@@ -55,17 +61,18 @@ const Drive = () => {
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyDpPN-iKLhciUkBuZNbTHCAxFUQgBkKg-s" }} // Replace with your Google Maps API key
         defaultCenter={{ lat: 37.34, lng: -121.938130 }}
-        defaultZoom={11}
+        defaultZoom={16}
         yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
       >
-        {/* Render markers for startPoint and endPoint */}
         {startPoint && (
           <div lat={startPoint.lat} lng={startPoint.lng}>Start</div>
         )}
         {endPoint && (
           <div lat={endPoint.lat} lng={endPoint.lng}>End</div>
         )}
+        {startPoint && <Marker lat={startPoint.lat} lng={startPoint.lng} text="Start" />}
+        {endPoint && <Marker lat={endPoint.lat} lng={endPoint.lng} text="End" />}
       </GoogleMapReact>
       <button className="next-button" onClick={fetchPassengers}>
         Next <FontAwesomeIcon icon={faArrowRight} />
